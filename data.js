@@ -4,6 +4,10 @@ import bcrypt from 'bcryptjs'
 
 const client = new DynamoDBClient({
   region: 'us-east-1',
+  credentials: {
+    accessKeyId: import.meta.env.VITE_ACCESS_KEY_ID,
+    secretAccessKey: import.meta.env.VITE_SECRET_ACCESS_KEY
+  }
 });
 
 export async function verifyExistingUser(username) {
