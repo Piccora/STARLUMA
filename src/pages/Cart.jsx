@@ -3,6 +3,7 @@ import CartCard from "../components/CartCard";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { checkoutCart } from "../redux/slices/CartSlice";
+import { deleteAllItemInCart } from "../../data";
 
 import toast from "react-hot-toast";
 
@@ -14,15 +15,23 @@ const Cart = () => {
   const navigate = useNavigate();
   useEffect(() => {
     setTotal(
-      cart.reduce((acc, curr) => acc + curr.retail_price_cents * curr.qty, 0)
+      cart.reduce((acc, curr) => acc + curr.retail_price_cents.N * curr.qty, 0)
     );
   }, [cart]);
 
   const checkout = () => {
     toast.success("Order Placed Successfully");
-    localStorage.removeItem("localCart");
-    dispatch(checkoutCart());
-    navigate("/");
+    const localCart = JSON.parse(localStorage.getItem("localCart"))
+    const itemIdList = localCart.map((x) => x.id.N)
+    console.log(itemIdList)
+    deleteAllItemInCart(itemIdList, localStorage.getItem("userId")).then(
+      () => {
+        localStorage.removeItem("localCart");
+        dispatch(checkoutCart());
+        navigate("/");
+      }
+    )
+
   };
   return (
     <div>

@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/slices/CartSlice";
 import toast from "react-hot-toast";
+import { addItemInCart } from "../../data";
 
 const PreviewCard = ({ shoe }) => {
   const cart = useSelector((state) => state.cart);
@@ -9,21 +10,30 @@ const PreviewCard = ({ shoe }) => {
   const dispatch = useDispatch();
 
   const add = () => {
-    const shoeInCart = cart.some((item) => item.id === shoe.id);
+    const shoeInCart = cart.some((item) => item.id.N === shoe.id.N);
     if (shoeInCart) {
       toast.error("You've Already Added This Item");
     } else {
       dispatch(addToCart(shoe));
+      const itemInformation = {
+        itemId: shoe.id.N,
+        userId: localStorage.getItem("userId")
+      }
+      addItemInCart(itemInformation).then(
+        () => {
+          toast.success("Added to cart");
+        }
+      )
       toast.success("Added to cart");
     }
   };
 
-  const img = shoe.original_picture_url;
-  const price = shoe.retail_price_cents;
-  const desc = shoe.story_html;
-  const name = shoe.name;
-  const brand = shoe.brand_name;
-  const gender = shoe.gender[0];
+  const img = shoe.original_picture_url.S;
+  const price = shoe.retail_price_cents.N;
+  const desc = shoe.story_html.S;
+  const name = shoe.name.S;
+  const brand = shoe.brand_name.S;
+  const gender = shoe.gender.SS[0];
 
   // const sizeRange = shoe.size_range.sort((a, b) => a - b);
   // const sizes = sizeRange.filter((size) => Math.floor(size) === size);

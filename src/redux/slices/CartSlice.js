@@ -16,16 +16,16 @@ const CartSlice = createSlice({
       return [...state, action.payload];
     },
     removeFromCart: (state, action) => {
-      return state.filter((shoe) => action.payload !== shoe.id);
+      return state.filter((shoe) => action.payload !== shoe.id.N);
     },
     increaseQty: (state, action) => {
       return state.map((shoe) =>
-        shoe.id === action.payload ? { ...shoe, qty: shoe.qty + 1 } : shoe
+        shoe.id.N === action.payload ? { ...shoe, qty: shoe.qty + 1 } : shoe
       );
     },
     decreaseQty: (state, action) => {
       return state.map((shoe) =>
-        shoe.id === action.payload ? { ...shoe, qty: shoe.qty - 1 } : shoe
+        shoe.id.N === action.payload ? { ...shoe, qty: shoe.qty - 1 } : shoe
       );
     },
   },

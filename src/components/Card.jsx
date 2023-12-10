@@ -3,25 +3,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../redux/slices/CartSlice";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { addItemInCart, deleteOneItemInCart } from "../../data";
 
 const Card = ({ shoe }) => {
   const cart = useSelector((state) => state.cart);
-  // console.log(shoe);
-  const img = shoe.original_picture_url;
-  const price = shoe.retail_price_cents;
-  const desc = shoe.story_html;
-  const id = shoe.id;
+  const img = shoe.original_picture_url.S;
+  const price = shoe.retail_price_cents.N;
+  const desc = shoe.story_html.S;
+  const id = shoe.id.N;
 
   const dispatch = useDispatch();
 
   const add = () => {
     dispatch(addToCart(shoe));
-    toast.success("Added to cart");
+    const itemInformation = {
+      itemId: shoe.id.N,
+      userId: localStorage.getItem("userId")
+    }
+    addItemInCart(itemInformation).then(
+      () => {
+        toast.success("Added to cart");
+      }
+    )
   };
 
   const remove = (itemIdx) => {
     dispatch(removeFromCart(itemIdx));
-    toast.error("Removed item from cart");
+    deleteOneItemInCart({
+      itemId: shoe.id.N,
+      userId: localStorage.getItem("userId")
+    }).then(
+      () => {
+        toast.error("Removed item from cart");
+      }
+    )
   };
 
   return (
@@ -48,9 +63,9 @@ const Card = ({ shoe }) => {
           </p>
 
           <div className="flex  items-center justify-between">
-            {cart.some((item) => item.id === shoe.id) ? (
+            {cart.some((item) => item.id.N === shoe.id.N) ? (
               <button
-                onClick={() => remove(shoe.id)}
+                onClick={() => remove(shoe.id.N)}
                 className="bg-red-400 text-white p-2 rounded-md text-sm "
               >
                 Remove Item

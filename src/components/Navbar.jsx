@@ -4,14 +4,24 @@ import { logo, gif } from "../assets/data";
 import { FaShoppingCart, FaTimes } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const cart = useSelector((state) => state.cart);
+  const loggedIn = localStorage.getItem("userId");
+  const navigate = useNavigate();
 
   const [click, setClick] = useState(false);
   const mobile = () => {
     setClick(!click);
   };
+
+  const handleClick = (event) => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("localCart");
+    navigate("/")
+    location.reload()
+  }
 
   return (
     <div className="p-1 md:p-4 flex items-center justify-between h-10 w-full">
@@ -25,8 +35,7 @@ const Navbar = () => {
           className="hidden dark:block"
         />
         <span className="text-2xl font-[1000] text-center dark:text-white">
-          SNKR.
-          <span className="font-extrabold text-sm">hub</span>
+          STARLUMA
         </span>
       </div>
 
@@ -36,6 +45,16 @@ const Navbar = () => {
         </li>
         <li>
           <Link to="/explore">Explore</Link>
+        </li>
+        {!loggedIn ? (<>
+        <li className=" rounded-md h-8">
+          <Link to="/login">Login</Link>
+        </li>
+        <li className=" rounded-md h-8">
+          <Link to="/register">Register</Link>
+        </li></>) : <>
+        <li className=" rounded-md h-8">
+          <Link to="/" onClick={handleClick}>Logout</Link>
         </li>
         <li>
           <Link to="/cart">
@@ -52,6 +71,9 @@ const Navbar = () => {
             </div>
           </Link>
         </li>
+        </>}
+        
+        
       </ul>
       {/* hidden max-sm:block */}
       <div className="block md:hidden">
@@ -71,6 +93,12 @@ const Navbar = () => {
             </li>
             <li className=" rounded-md h-8">
               <Link to="/cart">Cart</Link>
+            </li>
+            <li className=" rounded-md h-8">
+              <Link to="/login">Login</Link>
+            </li>
+            <li className=" rounded-md h-8">
+              <Link to="/register">Register</Link>
             </li>
           </ul>
         </button>
