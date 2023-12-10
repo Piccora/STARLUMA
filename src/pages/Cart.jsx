@@ -23,7 +23,6 @@ const Cart = () => {
     toast.success("Order Placed Successfully");
     const localCart = JSON.parse(localStorage.getItem("localCart"))
     const itemIdList = localCart.map((x) => x.id.N)
-    console.log(itemIdList)
     deleteAllItemInCart(itemIdList, localStorage.getItem("userId")).then(
       () => {
         localStorage.removeItem("localCart");
