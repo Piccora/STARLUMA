@@ -114,7 +114,7 @@ export default function SignIn() {
               label="Remember me"
             />
              <Typography variant="h5" gutterBottom sx={{ color: "#f20707", display: displayStateWrongCredentials }}>
-                            Username already existed
+                            Wrong credentials
                         </Typography>
                         <Typography variant="h5" gutterBottom sx={{ color: "#f20707", display: displayStateFields }}>
                             Not all fields are filled
